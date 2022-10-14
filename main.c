@@ -14,15 +14,18 @@
 
 int main() {
   struct list* list = list_setup();
-  struct link* curr = list->head;  /* This line generates a compiler error. */
-  int i = 0;
+  // struct link* curr = list->head;  /* This line generates a compiler error. */
+  struct list_iterator* itr = list_iterator_create(list);
+  int val, i = 0;
 
-  while (curr != NULL) {
+  while (list_iterator_has_next(itr)) {
     /*
      * The next two lines each generate a compiler error.
      */
-    printf("== list[%2d]: %d\n", i, curr->val);
-    curr = curr->next;
+    // printf("== list[%2d]: %d\n", i, curr->val);
+    // curr = curr->next;
+    val = list_iterator_next(itr);
+    printf("== list[%2d]: %d\n", i, val);
     i++;
   }
 

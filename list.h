@@ -9,6 +9,12 @@
 
 struct list;
 
+struct list_iterator;
+
 struct list* list_setup();
+
+struct list_iterator* list_iterator_create(struct list* list);
+int list_iterator_has_next(struct list_iterator* itr);
+int list_iterator_next(struct list_iterator* itr);
 
 #endif

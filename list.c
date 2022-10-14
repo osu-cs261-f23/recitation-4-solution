@@ -5,6 +5,7 @@
  */
 
 #include <stdlib.h>
+#include <assert.h>
 
 #include "list.h"
 
@@ -32,6 +33,15 @@ struct list {
   struct link* head;
 };
 
+/*
+ * This structure represents an iterator over a linked list.  It contains one
+ * field that holds a pointer to the link currently being examined in the
+ * current iteration.
+ */
+struct list_iterator {
+  struct link* curr;
+};
+
 
 /*
  * This function allocates, initializes, and fills a small linked list and
@@ -50,4 +60,41 @@ struct list* list_setup() {
   }
   list->head = next;
   return list;
+}
+
+/*
+ * This function allocates a list iterator, initializes it to start iteration
+ * at the beginning of the specified list, and returns a pointer to the
+ * iterator.
+ */
+struct list_iterator* list_iterator_create(struct list* list) {
+  assert(list);
+
+  struct list_iterator* itr = malloc(sizeof(struct list_iterator));
+  itr->curr = list->head;
+
+  return itr;
+}
+
+/*
+ * This function is used to indicate whether an iterator has more elements to
+ * examine.  It returns 1 if there are more elements to examine for itr and 0
+ * if there are no more elements to examine.
+ */
+int list_iterator_has_next(struct list_iterator* itr) {
+  assert(itr);
+  return itr->curr != NULL;
+}
+
+/*
+ * This function returns the value associated with the current element in an
+ * iterator's iteration and advances the iterator to the element in the list.
+ */
+int list_iterator_next(struct list_iterator* itr) {
+  assert(itr);
+  assert(itr->curr);
+
+  int val = itr->curr->val;
+  itr->curr = itr->curr->next;
+  return val;
 }
